@@ -14,7 +14,6 @@ exports.up = (pgm) => {
         username: { type: "varchar(100)", notNull: true, unique: true },
         password: { type: "varchar(100)", notNull: true },
         name: { type: "varchar(100)", notNull: true },
-        email: { type: "varchar(100)", notNull: true, unique: true },
         created_at: {
             type: "timestamp",
             notNull: true,
