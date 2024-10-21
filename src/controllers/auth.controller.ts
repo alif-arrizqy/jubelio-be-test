@@ -1,5 +1,6 @@
 import { Request, ResponseToolkit } from "@hapi/hapi";
 import AuthService from "../services/auth.service";
+import logger from "../utils/logger";
 
 class AuthController {
   static async register(request: Request, h: ResponseToolkit) {

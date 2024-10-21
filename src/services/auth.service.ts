@@ -2,7 +2,7 @@ import pool from "../utils/database";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-
+import logger from "../utils/logger";
 dotenv.config();
 
 class AuthService {
