@@ -1,0 +1,17 @@
+# Outdir
+dist/
+
+# Dependencies
+node_modules/
+
+# Logs
+npm-debug.log
+
+# Environment
+.env
+
+# package-lock.json
+package-lock.json
+
+# pg
+database.json
