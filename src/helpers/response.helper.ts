@@ -1,29 +1,25 @@
-const successMessage = (code: number = 200, message: string) => {
+const successMessage = (message: string, code: number = 200) => {
     return {
-        code,
+        statusCode: code,
         status: "success",
         message,
     };
-}
+};
 
-const successData = (code: number = 200, data: any) => {
+const successData = (data: any, code: number = 200) => {
     return {
-        code,
+        statusCode: code,
         status: "success",
         data,
-    }
-}
+    };
+};
 
-const errorMessage = (code: number = 500, message: string) => {
+const errorMessage = (errorType: string, message: string, code: number = 500) => {
     return {
-        code,
-        status: "error",
+        statusCode: code,
+        error: errorType,
         message,
     };
-}
+};
 
-export {
-    successMessage,
-    successData,
-    errorMessage,
-}
+export { successMessage, successData, errorMessage };
