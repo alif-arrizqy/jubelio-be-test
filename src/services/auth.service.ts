@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import logger from "../utils/logger";
+
 dotenv.config();
 
 class AuthService {
@@ -14,6 +15,7 @@ class AuthService {
                 "INSERT INTO users (username, password, name) VALUES ($1, $2, $3) RETURNING *",
                 [username, hashedPassword, name]
             );
+            logger.error(result.rows[0]);
             return result.rows[0];
         } finally {
             client.release();
