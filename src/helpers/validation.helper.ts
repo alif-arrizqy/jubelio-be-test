@@ -1,14 +1,55 @@
-const userValidation = (data: any) => {
+// Define interfaces for the expected data structures
+interface UserData {
+    username: string;
+    password: string;
+    name: string;
+}
+
+interface LoginData {
+    username: string;
+    password: string;
+}
+
+interface ProductData {
+    name: string;
+    price: number;
+}
+
+// Validation function for user registration
+const userValidation = (data: UserData): string | null => {
     if (!data.username) return "Username is required";
+    if (typeof data.username !== "string") return "Username must be a string";
     if (!data.password) return "Password is required";
+    if (typeof data.password !== "string") return "Password must be a string";
     if (!data.name) return "Name is required";
+    if (typeof data.name !== "string") return "Name must be a string";
     return null;
 };
 
-const loginValidation = (data: any) => {
+// Validation function for user login
+const loginValidation = (data: LoginData): string | null => {
     if (!data.username) return "Username is required";
+    if (typeof data.username !== "string") return "Username must be a string";
     if (!data.password) return "Password is required";
+    if (typeof data.password !== "string") return "Password must be a string";
     return null;
 };
 
-export { userValidation, loginValidation };
+// Validation function for product
+const productValidation = (data: ProductData): string | null => {
+    if (!data.name) return "Name is required";
+    if (typeof data.name !== "string") return "Name must be a string";
+    if (data.price === undefined || data.price === null)
+        return "Price is required";
+    if (typeof data.price !== "number") return "Price must be a number";
+    return null;
+};
+
+export {
+    userValidation,
+    loginValidation,
+    productValidation,
+    UserData,
+    LoginData,
+    ProductData,
+};

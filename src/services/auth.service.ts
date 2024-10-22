@@ -15,7 +15,6 @@ class AuthService {
                 "INSERT INTO users (username, password, name) VALUES ($1, $2, $3) RETURNING *",
                 [username, hashedPassword, name]
             );
-            logger.error(result.rows[0]);
             return result.rows[0];
         } finally {
             client.release();
@@ -34,8 +33,11 @@ class AuthService {
                 const token = generateToken(user);
                 return { token };
             } else {
-                throw new Error("Invalid credentials");
+                logger.error("Invalid credentials");
+                return null;
             }
+        } catch (err) {
+            logger.error(`Login failed: ${err}`);
         } finally {
             client.release();
         }
