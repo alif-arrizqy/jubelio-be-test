@@ -1,8 +1,8 @@
 import pool from "../utils/database";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import logger from "../utils/logger";
+import { generateToken } from "../utils/auth";
 
 dotenv.config();
 
@@ -31,11 +31,7 @@ class AuthService {
             );
             const user = result.rows[0];
             if (user && (await bcrypt.compare(password, user.password))) {
-                const token = jwt.sign(
-                    { id: user.id, username: user.username },
-                    process.env.JWT_SECRET!,
-                    { expiresIn: "1h" }
-                );
+                const token = generateToken(user);
                 return { token };
             } else {
                 throw new Error("Invalid credentials");
