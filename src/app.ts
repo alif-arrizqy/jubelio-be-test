@@ -50,7 +50,7 @@ const init = async () => {
             method: "*",
             path: "/{any*}",
             handler: (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
-                return h.response({ error: "Not Found" }).code(404);
+                return h.response({ error: "Endpoint Not Found" }).code(404);
             },
         },
     ];
