@@ -11,13 +11,12 @@ class AuthController {
             if (isValid) {
                 return h.response(responseHelper.errorMessage("Bad Request", isValid, 400)).code(400);
             }
-            const { username, password, name } = request.payload as any;
-            const result = await AuthService.register(username, password, name);
-            if (result) {
-                return h.response(responseHelper.successMessage("Successfully to register user", 201)).code(201);
-            } else {
-                return h.response(responseHelper.errorMessage("Bad Request", "Failed to register user", 400)).code(400);
-            }            
+            const { username, password, name, role } = request.payload as any;
+            const result = await AuthService.register(username, password, name, role);         
+            if (result === "Role not found") {
+                return h.response(responseHelper.errorMessage("Bad Request", "Role not found", 400)).code(400);
+            }
+            return h.response(responseHelper.successData("Successfully to registeruser", 201)).code(201);
         } catch (error) {
             logger.error(`${error}`)
             return h.response(responseHelper.errorMessage("Internal Server Error", `${error}`, 500)).code(500);
