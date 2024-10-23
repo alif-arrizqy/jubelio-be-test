@@ -6,6 +6,7 @@ import logger from "./utils/logger";
 import { validateToken } from "./utils/auth";
 import HapiJwt from "@hapi/jwt";
 import productRoutes from "./routes/product.routes";
+import roleRoutes from "./routes/role.routes";
 
 dotenv.config(); // Load environment variables
 
@@ -39,6 +40,7 @@ const init = async () => {
     const routes = [
         ...authRoutes,
         ...productRoutes,
+        ...roleRoutes,
         healthCheckRoute,
         {
             method: "GET",

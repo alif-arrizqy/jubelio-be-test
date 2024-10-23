@@ -15,6 +15,10 @@ interface ProductData {
     price: number;
 }
 
+interface RoleData {
+    name: string;
+}
+
 // Validation function for user registration
 const userValidation = (data: UserData): string | null => {
     if (!data.username) return "Username is required";
@@ -45,11 +49,20 @@ const productValidation = (data: ProductData): string | null => {
     return null;
 };
 
+// Validation function for role
+const roleValidation = (data: RoleData): string | null => {
+    if (!data.name) return "Name is required";
+    if (typeof data.name !== "string") return "Name must be a string";
+    return null;
+};
+
 export {
     userValidation,
     loginValidation,
     productValidation,
+    roleValidation,
     UserData,
     LoginData,
     ProductData,
+    RoleData,
 };
