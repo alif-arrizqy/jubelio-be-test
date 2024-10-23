@@ -40,7 +40,7 @@ const init = async () => {
     // Set the default authentication strategy
     server.auth.default("jwt");
 
-    const routes = [
+    const routes: Hapi.ServerRoute[] = [
         ...authRoutes,
         ...productRoutes,
         ...roleRoutes,
