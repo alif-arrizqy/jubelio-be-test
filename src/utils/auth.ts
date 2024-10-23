@@ -11,7 +11,7 @@ const validateToken = async (decoded: any, request: Request, h: ResponseToolkit)
 
 const generateToken = (user: any) => {
     return jwt.sign(
-        { username: user.username },
+        { username: user.username, role: user.role },
         process.env.JWT_SECRET!,
         { expiresIn: "1h" }
     );
