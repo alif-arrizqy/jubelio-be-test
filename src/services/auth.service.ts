@@ -7,13 +7,24 @@ import { generateToken } from "../utils/auth";
 dotenv.config();
 
 class AuthService {
-    static async register(username: string, password: string, name: string) {
+    static async register(username: string, password: string, name: string, role: number) {
         const hashedPassword = await bcrypt.hash(password, 10);
         const client = await pool.connect();
         try {
+
+            // Validate the role of the user
+            const checkRole = await client.query(
+                "SELECT * FROM roles WHERE id = $1",
+                [role]
+            );
+            if (checkRole.rows.length === 0) {
+                logger.error("Role not found");
+                return "Role not found";
+            }
+
             const result = await client.query(
-                "INSERT INTO users (username, password, name) VALUES ($1, $2, $3) RETURNING *",
-                [username, hashedPassword, name]
+                "INSERT INTO users (username, password, name, role) VALUES ($1, $2, $3, $4) RETURNING *",
+                [username, hashedPassword, name, role]
             );
             return result.rows[0];
         } finally {
