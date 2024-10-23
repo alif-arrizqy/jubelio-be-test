@@ -3,6 +3,7 @@ interface UserData {
     username: string;
     password: string;
     name: string;
+    role: number;
 }
 
 interface LoginData {
@@ -27,6 +28,9 @@ const userValidation = (data: UserData): string | null => {
     if (typeof data.password !== "string") return "Password must be a string";
     if (!data.name) return "Name is required";
     if (typeof data.name !== "string") return "Name must be a string";
+    if (data.role === undefined || data.role === null)
+        return "Role is required";
+    if (typeof data.role !== "number") return "Role must be a number";
     return null;
 };
 
