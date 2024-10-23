@@ -1,5 +1,6 @@
 import { ServerRoute } from "@hapi/hapi";
 import InventoryController from "../controllers/inventory.controller";
+import { auditTrail } from "../middlewares/audit";
 
 const inventoryRoutes: ServerRoute[] = [
     {
@@ -10,6 +11,9 @@ const inventoryRoutes: ServerRoute[] = [
             auth: {
                 strategy: "jwt",
                 scope: ["admin"],
+            },
+            ext: {
+                onPostHandler: { method: auditTrail },
             },
         },
     },
@@ -22,6 +26,9 @@ const inventoryRoutes: ServerRoute[] = [
                 strategy: "jwt",
                 scope: ["admin", "manager"],
             },
+            ext: {
+                onPostHandler: { method: auditTrail },
+            },
         },
     },
     {
@@ -32,6 +39,9 @@ const inventoryRoutes: ServerRoute[] = [
             auth: {
                 strategy: "jwt",
                 scope: ["admin", "manager"],
+            },
+            ext: {
+                onPostHandler: { method: auditTrail },
             },
         },
     },
@@ -44,7 +54,10 @@ const inventoryRoutes: ServerRoute[] = [
                 strategy: "jwt",
                 scope: ["admin", "manager"],
             },
-        }
+            ext: {
+                onPostHandler: { method: auditTrail },
+            },
+        },
     },
     {
         method: "GET",
@@ -55,8 +68,11 @@ const inventoryRoutes: ServerRoute[] = [
                 strategy: "jwt",
                 scope: ["admin", "manager"],
             },
-        }
-    }
+            ext: {
+                onPostHandler: { method: auditTrail },
+            },
+        },
+    },
 ];
 
 export default inventoryRoutes;

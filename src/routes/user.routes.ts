@@ -1,5 +1,6 @@
 import { ServerRoute } from "@hapi/hapi";
 import UserController from "../controllers/user.controller";
+import { auditTrail } from "../middlewares/audit";
 
 const userRoutes: ServerRoute[] = [
     {
@@ -9,7 +10,10 @@ const userRoutes: ServerRoute[] = [
         options: {
             auth: {
                 strategy: "jwt",
-                scope: ["admin"],
+                scope: ["admin", "manager"],
+            },
+            ext: {
+                onPostHandler: { method: auditTrail },
             },
         },
     },
@@ -20,7 +24,10 @@ const userRoutes: ServerRoute[] = [
         options: {
             auth: {
                 strategy: "jwt",
-                scope: ["admin"],
+                scope: ["admin", "manager"],
+            },
+            ext: {
+                onPostHandler: { method: auditTrail },
             },
         },
     },
@@ -31,7 +38,7 @@ const userRoutes: ServerRoute[] = [
         options: {
             auth: {
                 strategy: "jwt",
-                scope: ["admin"],
+                scope: ["admin", "manager"],
             },
         },
     },
@@ -44,6 +51,9 @@ const userRoutes: ServerRoute[] = [
                 strategy: "jwt",
                 scope: ["admin", "manager", "staff"],
             },
+            ext: {
+                onPostHandler: { method: auditTrail },
+            },
         },
     },
     {
@@ -53,7 +63,10 @@ const userRoutes: ServerRoute[] = [
         options: {
             auth: {
                 strategy: "jwt",
-                scope: ["admin"],
+                scope: ["admin", "manager"],
+            },
+            ext: {
+                onPostHandler: { method: auditTrail },
             },
         },
     },

@@ -1,5 +1,6 @@
 import { ServerRoute } from "@hapi/hapi";
 import LocationController from "../controllers/location.controller";
+import { auditTrail } from "../middlewares/audit";
 
 const locationRoutes: ServerRoute[] = [
     {
@@ -10,7 +11,10 @@ const locationRoutes: ServerRoute[] = [
             auth: {
                 strategy: "jwt",
                 scope: ["admin", "staff"],
-            }
+            },
+            ext: {
+                onPostHandler: { method: auditTrail },
+            },
         },
     },
     {
@@ -21,7 +25,10 @@ const locationRoutes: ServerRoute[] = [
             auth: {
                 strategy: "jwt",
                 scope: ["admin", "staff"],
-            }
+            },
+            ext: {
+                onPostHandler: { method: auditTrail },
+            },
         },
     },
     {
@@ -32,7 +39,10 @@ const locationRoutes: ServerRoute[] = [
             auth: {
                 strategy: "jwt",
                 scope: ["admin", "staff"],
-            }
+            },
+            ext: {
+                onPostHandler: { method: auditTrail },
+            },
         },
     },
 ];
