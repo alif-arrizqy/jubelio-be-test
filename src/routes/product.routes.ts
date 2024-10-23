@@ -7,7 +7,10 @@ const productRoutes: ServerRoute[] = [
         path: "/api/products",
         handler: ProductController.createProduct,
         options: {
-            auth: "jwt",
+            auth: {
+                strategy: "jwt",
+                scope: ["admin", "staff"],
+            }
         },
     },
     {
@@ -15,7 +18,10 @@ const productRoutes: ServerRoute[] = [
         path: "/api/products",
         handler: ProductController.getProducts,
         options: {
-            auth: "jwt",
+            auth: {
+                strategy: "jwt",
+                scope: ["admin", "manager"],
+            }
         },
     },
     {
@@ -23,7 +29,10 @@ const productRoutes: ServerRoute[] = [
         path: "/api/products/{id}",
         handler: ProductController.getProductById,
         options: {
-            auth: "jwt",
+            auth: {
+                strategy: "jwt",
+                scope: ["admin", "manager"],
+            }
         },
     },
     {
@@ -31,7 +40,10 @@ const productRoutes: ServerRoute[] = [
         path: "/api/products/{id}",
         handler: ProductController.updateProduct,
         options: {
-            auth: "jwt",
+            auth: {
+                strategy: "jwt",
+                scope: ["admin", "staff"],
+            }
         },
     },
     {
@@ -39,7 +51,10 @@ const productRoutes: ServerRoute[] = [
         path: "/api/products/{id}",
         handler: ProductController.deleteProduct,
         options: {
-            auth: "jwt",
+            auth: {
+                strategy: "jwt",
+                scope: ["admin", "staff"],
+            }
         },
     },
 ];

@@ -9,7 +9,7 @@ const locationRoutes: ServerRoute[] = [
         options: {
             auth: {
                 strategy: "jwt",
-                scope: ["admin"],
+                scope: ["admin", "staff"],
             }
         },
     },
@@ -20,7 +20,7 @@ const locationRoutes: ServerRoute[] = [
         options: {
             auth: {
                 strategy: "jwt",
-                scope: ["admin"],
+                scope: ["admin", "staff"],
             }
         },
     },
@@ -31,7 +31,7 @@ const locationRoutes: ServerRoute[] = [
         options: {
             auth: {
                 strategy: "jwt",
-                scope: ["admin"],
+                scope: ["admin", "staff"],
             }
         },
     },
