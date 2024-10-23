@@ -2,7 +2,7 @@ import { Server } from "@hapi/hapi";
 import userRoutes from "./user.routes";
 import productRoutes from "./product.routes";
 import locationRoutes from "./location.routes";
-import inventoryRoutes from "./inventory.routes";";
+import inventoryRoutes from "./inventory.routes";
 import { auditTrail } from "../middlewares/audit";
 
 export const registerRoutes = (server: Server) => {
