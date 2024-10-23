@@ -2,28 +2,37 @@ import { Request, ResponseToolkit } from "@hapi/hapi";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import logger from "./logger";
+
 dotenv.config();
 
-const validateToken = async (decoded: any, request: Request, h: ResponseToolkit) => {
+const VALID_ROLES = new Set(['admin', 'manager', 'staff']);
+const TOKEN_EXPIRED_MESSAGE = 'Token expired';
+const INVALID_ROLE_MESSAGE = 'Invalid role';
+
+interface DecodedToken {
+    decoded: {
+        payload: {
+            exp: number;
+            scope: string;
+        };
+    };
+}
+
+const validateToken = async (decoded: DecodedToken, request: Request, h: ResponseToolkit) => {
     try {
+        const { exp, scope } = decoded.decoded.payload;
+
         // Check if the token is expired
-        if (decoded.decoded.payload.exp <= Math.floor(Date.now() / 1000)) {
+        if (exp <= Math.floor(Date.now() / 1000)) {
+            logger.error(TOKEN_EXPIRED_MESSAGE);
             return { isValid: false };
         }
 
         // Check role in JWT Token
-        const userRole = decoded.decoded.payload.scope;
-        
-        if (userRole == "admin") {
-            logger.info(`Token valid as ${userRole}`)
-            return { isValid: true };
-        } else if (userRole == "manager") {
-            logger.info(`Token valid as ${userRole}`)
-            return { isValid: true };
-        } else if (userRole == "staff") {
-            logger.info(`Token valid as ${userRole}`)
+        if (VALID_ROLES.has(scope[0])) {
             return { isValid: true };
         } else {
+            logger.error(`${INVALID_ROLE_MESSAGE}: ${scope}`);
             return { isValid: false };
         }
     } catch (err) {
