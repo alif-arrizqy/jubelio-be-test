@@ -26,6 +26,14 @@ interface LocationData {
     capacity: number;
 }
 
+interface InventoryStockAdjustmentData {
+    productId: number;
+    locationId: number;
+    stock: number;
+    operation: "IN" | "OUT";
+    notes: string;
+}
+
 // Validation function for user registration
 const userValidation = (data: UserData): string | null => {
     if (!data.username) return "Username is required";
@@ -78,15 +86,36 @@ const locationValidation = (data: LocationData): string | null => {
     return null;
 };
 
+// Validation function for inventory stock adjustment
+const inventoryStockAdjustmentValidation = (
+    data: InventoryStockAdjustmentData
+): string | null => {
+    if (!data.productId) return "Product ID is required";
+    if (typeof data.productId !== "number") return "Product ID must be a number";
+    if (!data.locationId) return "Location ID is required";
+    if (typeof data.locationId !== "number")
+        return "Location ID must be a number";
+    if (!data.stock) return "Stock is required";
+    if (typeof data.stock !== "number") return "Stock must be a number";
+    if (!data.operation) return "Operation is required";
+    if (data.operation !== "IN" && data.operation !== "OUT")
+        return "Operation must be IN or OUT";
+    // if (!data.notes) return "Notes is required";
+    if (typeof data.notes !== "string") return "Notes must be a string";
+    return null;
+};
+
 export {
     userValidation,
     loginValidation,
     productValidation,
     roleValidation,
     locationValidation,
+    inventoryStockAdjustmentValidation,
     UserData,
     LoginData,
     ProductData,
     RoleData,
     LocationData,
+    InventoryStockAdjustmentData,
 };
