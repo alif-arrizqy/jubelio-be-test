@@ -50,9 +50,15 @@ class RoleService {
         }
     }
 
-    static async updateRole(id: string, role: any) {
+    static async updateRole(id: number, role: any) {
         const client = await pool.connect();
         try {
+            const isExist = await client.query("SELECT * FROM roles WHERE id = $1", [id]);
+            if (isExist.rows.length === 0) {
+                logger.error("Role not found");
+                return "Role not found";
+            }
+
             const result = await client.query(
                 "UPDATE roles SET name = $1 WHERE id = $2 RETURNING *",
                 [role.name, id]
@@ -66,9 +72,15 @@ class RoleService {
         }
     }
 
-    static async deleteRole(id: string) {
+    static async deleteRole(id: number) {
         const client = await pool.connect();
         try {
+            const isExist = await client.query("SELECT * FROM roles WHERE id = $1", [id]);
+            if (isExist.rows.length === 0) {
+                logger.error("Role not found");
+                return "Role not found";
+            }
+            
             const result = await client.query(
                 "DELETE FROM roles WHERE id = $1 RETURNING *",
                 [id]

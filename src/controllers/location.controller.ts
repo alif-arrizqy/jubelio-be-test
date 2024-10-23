@@ -34,11 +34,10 @@ class LocationController {
             }
             const { name, address, capacity } = request.payload as any;
             const location = await LocationService.updateLocation(request.params.id, { name, address, capacity });
-            if (location) {
-                return h.response(responseHelper.successMessage("Successfully to update location", 200)).code(200);
-            } else {
-                return h.response(responseHelper.errorMessage("Bad Request", "Failed to update location", 400)).code(400);
+            if (location === "Location not found") {
+                return h.response(responseHelper.errorMessage("Bad Request", location, 400)).code(400);
             }
+            return h.response(responseHelper.successMessage("Successfully to update location", 200)).code(200);
         } catch (err) {
             logger.error(`Update location failed: ${err}`);
             return h.response(responseHelper.errorMessage("Internal Server Error", `${err}`, 500)).code(500);
@@ -48,11 +47,10 @@ class LocationController {
     static async deleteLocation(request: Request, h: ResponseToolkit) {
         try {
             const isDeleted = await LocationService.deleteLocation(request.params.id);
-            if (isDeleted) {
-                return h.response(responseHelper.successMessage("Successfully to delete location", 200)).code(200);
-            } else {
-                return h.response(responseHelper.errorMessage("Bad Request", "Failed to delete location", 400)).code(400);
+            if (isDeleted === "Location not found") {
+                return h.response(responseHelper.errorMessage("Bad Request", isDeleted, 400)).code(400);
             }
+            return h.response(responseHelper.successMessage("Successfully to delete location", 200)).code(200);
         } catch (err) {
             logger.error(`Delete location failed: ${err}`);
             return h.response(responseHelper.errorMessage("Internal Server Error", `${err}`, 500)).code(500);

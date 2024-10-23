@@ -54,9 +54,15 @@ class ProductService {
         }
     }
 
-    static async updateProduct(id: string, product: any) {
+    static async updateProduct(id: number, product: any) {
         const client = await pool.connect();
         try {
+            const isExist = await client.query("SELECT * FROM products WHERE id = $1", [id]);
+            if (isExist.rows.length === 0) {
+                logger.error("Product not found");
+                return "Product not found";
+            }
+
             const result = await client.query(
                 "UPDATE products SET name = $1, price = $2 WHERE id = $3 RETURNING *",
                 [product.name, product.price, id]
@@ -70,9 +76,15 @@ class ProductService {
         }
     }
 
-    static async deleteProduct(id: string) {
+    static async deleteProduct(id: number) {
         const client = await pool.connect();
         try {
+            const isExist = await client.query("SELECT * FROM products WHERE id = $1", [id]);
+            if (isExist.rows.length === 0) {
+                logger.error("Product not found");
+                return "Product not found";
+            }
+            
             const result = await client.query(
                 "DELETE FROM products WHERE id = $1 RETURNING *",
                 [id]

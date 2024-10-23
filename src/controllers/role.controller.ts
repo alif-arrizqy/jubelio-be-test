@@ -60,11 +60,10 @@ class RoleController {
                 return h.response(responseHelper.errorMessage("Bad Request", isValid, 400)).code(400);
             }
             const role = await RoleService.updateRole(request.params.id, request.payload);
-            if (role) {
-                return h.response(responseHelper.successData("Successfully to update role", 200)).code(200);
-            } else {
+            if (role === "Role not found") {
                 return h.response(responseHelper.errorMessage("Not Found", "Role not found", 400)).code(400);
             }
+            return h.response(responseHelper.successData("Successfully to update role", 200)).code(200);
         } catch (err) {
             logger.error(`Update role failed: ${err}`);
             return h.response(responseHelper.errorMessage("Internal Server Error", `${err}`, 500)).code(500);
@@ -74,11 +73,10 @@ class RoleController {
     static async deleteRole(request: Request, h: ResponseToolkit) {
         try {
             const isDeleted = await RoleService.deleteRole(request.params.id);
-            if (isDeleted) {
-                return h.response(responseHelper.successMessage("Successfully to delete role", 200)).code(200);
-            } else {
+            if (isDeleted === "Role not found") {
                 return h.response(responseHelper.errorMessage("Not Found", "Role not found", 404)).code(404);
             }
+            return h.response(responseHelper.successMessage("Successfully to delete role", 200)).code(200);
         } catch (err) {
             logger.error(`Delete role failed: ${err}`);
             return h.response(responseHelper.errorMessage("Internal Server Error", `${err}`, 500)).code(500);

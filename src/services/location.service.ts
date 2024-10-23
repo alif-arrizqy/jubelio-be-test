@@ -18,9 +18,15 @@ class LocationService {
         }
     }
 
-    static async updateLocation(id: string, location: any) {
+    static async updateLocation(id: number, location: any) {
         const client = await pool.connect();
         try {
+            const isExist = await client.query("SELECT * FROM locations WHERE id = $1", [id]);
+            if (isExist.rows.length === 0) {
+                logger.error("Location not found");
+                return "Location not found";
+            }
+
             const result = await client.query(
                 "UPDATE locations SET name = $1, address = $2, capacity = $3 WHERE id = $4 RETURNING *",
                 [location.name, location.address, location.capacity, id]
@@ -34,9 +40,15 @@ class LocationService {
         }
     }
 
-    static async deleteLocation(id: string) {
+    static async deleteLocation(id: number) {
         const client = await pool.connect();
         try {
+            const isExist = await client.query("SELECT * FROM locations WHERE id = $1", [id]);
+            if (isExist.rows.length === 0) {
+                logger.error("Location not found");
+                return "Location not found";
+            }
+
             const result = await client.query(
                 "DELETE FROM locations WHERE id = $1 RETURNING *",
                 [id]

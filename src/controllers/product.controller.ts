@@ -60,11 +60,10 @@ class ProductController {
                 return h.response(responseHelper.errorMessage("Bad Request", isValid, 400)).code(400);
             }
             const product = await ProductService.updateProduct(request.params.id, request.payload);
-            if (product) {
-                return h.response(responseHelper.successMessage("Successfully to update product", 200)).code(200);
-            } else {
-                return h.response(responseHelper.errorMessage("Not Found", "Product not found", 404)).code(404);
+            if (product === "Product not found") {
+                return h.response(responseHelper.errorMessage("Not Found", product, 404)).code(404);
             }
+            return h.response(responseHelper.successMessage("Successfully to update product", 200)).code(200);
         } catch (err) {
             logger.error(`Update product failed: ${err}`);
             return h.response(responseHelper.errorMessage("Internal Server Error", `${err}`, 500)).code
@@ -74,11 +73,10 @@ class ProductController {
     static async deleteProduct(request: Request, h: ResponseToolkit) {
         try {
             const isDeleted = await ProductService.deleteProduct(request.params.id);
-            if (isDeleted) {
-                return h.response(responseHelper.successMessage("Successfully to delete product", 200)).code(200);
-            } else {
-                return h.response(responseHelper.errorMessage("Not Found", "Product not found", 404)).code(404);
+            if (isDeleted === "Product not found") {
+                return h.response(responseHelper.errorMessage("Not Found", isDeleted, 404)).code(404);
             }
+            return h.response(responseHelper.successMessage("Successfully to delete product", 200)).code(200);
         } catch (err) {
             logger.error(`Delete product failed: ${err}`);
             return h.response(responseHelper.errorMessage("Internal Server Error", `${err}`, 500)).code(500);
