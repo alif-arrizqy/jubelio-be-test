@@ -12,7 +12,7 @@ class RoleController {
                 logger.error(`Create role failed: ${isValid}`);
                 return h.response(responseHelper.errorMessage("Bad Request", isValid, 400)).code(400);
             }
-            const name = request.payload as any;
+            const { name } = request.payload as any;
             const role = await RoleService.createRole(name);
             if (role) {
                 return h.response(responseHelper.successMessage("Successfully to insert new role", 201)).code(201);
@@ -54,12 +54,16 @@ class RoleController {
 
     static async updateRole(request: Request, h: ResponseToolkit) {
         try {
-            const { name } = request.payload as { name: string };
-            const role = await RoleService.updateRole(request.params.id, { name });
+            const isValid = roleValidation(request.payload as RoleData);
+            if (isValid) {
+                logger.error(`Update role failed: ${isValid}`);
+                return h.response(responseHelper.errorMessage("Bad Request", isValid, 400)).code(400);
+            }
+            const role = await RoleService.updateRole(request.params.id, request.payload);
             if (role) {
-                return h.response(responseHelper.successData(role, 200)).code(200);
+                return h.response(responseHelper.successData("Successfully to update role", 200)).code(200);
             } else {
-                return h.response(responseHelper.errorMessage("Bad Request", "Failed to update role", 400)).code(400);
+                return h.response(responseHelper.errorMessage("Not Found", "Role not found", 400)).code(400);
             }
         } catch (err) {
             logger.error(`Update role failed: ${err}`);
@@ -69,8 +73,8 @@ class RoleController {
 
     static async deleteRole(request: Request, h: ResponseToolkit) {
         try {
-            const role = await RoleService.deleteRole(request.params.id);
-            if (role) {
+            const isDeleted = await RoleService.deleteRole(request.params.id);
+            if (isDeleted) {
                 return h.response(responseHelper.successMessage("Successfully to delete role", 200)).code(200);
             } else {
                 return h.response(responseHelper.errorMessage("Not Found", "Role not found", 404)).code(404);
