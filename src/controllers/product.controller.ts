@@ -40,10 +40,7 @@ class ProductController {
 
     static async getProductById(request: Request, h: ResponseToolkit) {
         try {
-            const product = await ProductService.getProductById(
-                request.params.id
-            );
-            logger.info(`Get product by ID: ${JSON.stringify(product)}`);
+            const product = await ProductService.getProductById(request.params.id);
             if (product) {
                 return h.response(responseHelper.successData(product, 200)).code(200);
             } else {
@@ -76,10 +73,8 @@ class ProductController {
 
     static async deleteProduct(request: Request, h: ResponseToolkit) {
         try {
-            const success = await ProductService.deleteProduct(
-                request.params.id
-            );
-            if (success) {
+            const isDeleted = await ProductService.deleteProduct(request.params.id);
+            if (isDeleted) {
                 return h.response(responseHelper.successMessage("Successfully to delete product", 200)).code(200);
             } else {
                 return h.response(responseHelper.errorMessage("Not Found", "Product not found", 404)).code(404);
