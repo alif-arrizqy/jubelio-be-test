@@ -9,7 +9,7 @@ exports.shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 exports.up = (pgm) => {
-    pgm.createTable("inventory", {
+    pgm.createTable("inventory_transactions", {
         id: { type: "serial", primaryKey: true },
         product_id: {
             type: "integer",
@@ -23,10 +23,11 @@ exports.up = (pgm) => {
             references: "locations",
             onDelete: "CASCADE",
         },
-        total_stock: {
+        stock: {
             type: "integer",
             notNull: true,
         },
+        notes: { type: "text", notNull: false },
         created_at: {
             type: "timestamp",
             notNull: true,
@@ -40,11 +41,13 @@ exports.up = (pgm) => {
     });
 };
 
+
 /**
  * @param pgm {import('node-pg-migrate').MigrationBuilder}
  * @param run {() => void | undefined}
  * @returns {Promise<void> | void}
  */
 exports.down = (pgm) => {
-    pgm.dropTable("inventory");
+    pgm.dropTable("inventory_transactions");
 };
+

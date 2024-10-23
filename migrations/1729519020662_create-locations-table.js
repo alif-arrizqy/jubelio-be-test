@@ -13,6 +13,7 @@ exports.up = (pgm) => {
         id: { type: "serial", primaryKey: true },
         name: { type: "varchar(100)", notNull: true },
         address: { type: "varchar(100)", notNull: true },
+        capacity: { type: "integer", notNull: true },
         created_at: {
             type: "timestamp",
             notNull: true,

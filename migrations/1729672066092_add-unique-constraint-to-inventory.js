@@ -9,8 +9,8 @@ exports.shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 exports.up = (pgm) => {
-    pgm.addColumn("locations", {
-        capacity: { type: "integer", notNull: true },
+    pgm.addConstraint("inventory", "unique_product_id_location_id", {
+        unique: ["product_id", "location_id"],
     });
 };
 
@@ -20,6 +20,5 @@ exports.up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 exports.down = (pgm) => {
-    pgm.dropColumn("locations", "capacity");
+    pgm.dropConstraint("inventory", "unique_product_id_location_id");
 };
-
