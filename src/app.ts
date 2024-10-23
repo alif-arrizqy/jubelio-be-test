@@ -1,7 +1,7 @@
 import Hapi from "@hapi/hapi";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes";
-import healthCheckRoute from "./utils/healthcheck";
+import {healthCheckRoute, readinessCheckRoute} from "./utils/healthcheck";
 import logger from "./utils/logger";
 import { validateToken } from "./utils/auth";
 import HapiJwt from "@hapi/jwt";
@@ -48,6 +48,7 @@ const init = async () => {
         ...locationRoutes,
         ...inventoryRoutes,
         healthCheckRoute,
+        readinessCheckRoute,
         {
             method: "GET",
             path: "/",
