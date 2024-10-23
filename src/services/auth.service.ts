@@ -40,8 +40,14 @@ class AuthService {
                 [username]
             );
             const user = result.rows[0];
+            // find role of the user
+            const role = await client.query(
+                "SELECT * FROM roles WHERE id = $1",
+                [user.role]
+            );
+            user.role = role.rows[0].name;
             if (user && (await bcrypt.compare(password, user.password))) {
-                const token = generateToken(user);
+                const token = generateToken(user);                
                 return { token };
             } else {
                 logger.error("Invalid credentials");
